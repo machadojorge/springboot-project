@@ -1,11 +1,14 @@
 package com.miguel.spring.project.springbootproject.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 // we need put in this class annotations to connect this class to JPA BD
@@ -22,7 +25,16 @@ public class User implements Serializable{
     private String email;
     private String phone;
     private String password;
+
+    // This actribut is the acssociation with the class Order
+   // In this way, we goes mapping the foreigh key from the Order
+   // this way, we goes inform the spring that foreigh key is mapping for the attribut declair in the class Order
+   // we need given the name of this attribute that it has in the class Order
+   @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
     
+   
+
     public User() {
     }
 
@@ -79,6 +91,10 @@ public class User implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+     public List<Order> getOrders() {
+        return orders;
     }
 
     @Override
