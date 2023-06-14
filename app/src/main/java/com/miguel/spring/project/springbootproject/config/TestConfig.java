@@ -1,5 +1,6 @@
 package com.miguel.spring.project.springbootproject.config;
 
+import java.time.Instant;
 import java.util.Arrays;
 
 // we are in profile test, we create the "application-test.properties" with configurations
@@ -14,7 +15,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.miguel.spring.project.springbootproject.entities.Order;
 import com.miguel.spring.project.springbootproject.entities.User;
+import com.miguel.spring.project.springbootproject.repositories.OrderRepository;
 import com.miguel.spring.project.springbootproject.repositories.UserRepository;
 
 @Configuration
@@ -28,6 +31,8 @@ public class TestConfig implements CommandLineRunner
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
     // This method of this interface it is used for do something where the run is execute
     // in this case, ever the program is executed this method is called
     @Override
@@ -42,6 +47,15 @@ public class TestConfig implements CommandLineRunner
         
         //throw new UnsupportedOperationException("Unimplemented method 'run'");
 
+
+        // In this case we creates three records, and the accociation, with attribut passed in constructor u1, u2, ~
+        // referring to previous users
+        // The operation "Instant.parse()" goes convert from string to a valid dateTime
+        Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1);
+        Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), u2);
+        Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), u1);
+    
+        orderRepository.saveAll(Arrays.asList(o1, o2, o3));
     }
 
 

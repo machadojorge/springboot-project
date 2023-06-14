@@ -3,6 +3,9 @@ package com.miguel.spring.project.springbootproject.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +24,10 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     //we uses the class Instant from java >= 8, this class replace the class Data, is better
+   //this annotations goes format the Instant to show in json with the apropriate format
+   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    //this annotations can define the mask that we show the date, withe the respective timezone
+
     private Instant moment;
 
     // now, we declare the associations
@@ -28,6 +35,7 @@ public class Order implements Serializable {
    // this relationship is 1 for many;
    // one client can be have many Orders
    // This annotation inform the type of relation 1 - *
+   //@JsonIgnore
    @ManyToOne
    // this annottation is to join this foreigh key to this table, and we give a name to this column
    @JoinColumn(name = "client_id")
