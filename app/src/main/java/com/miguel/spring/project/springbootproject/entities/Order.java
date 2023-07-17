@@ -5,6 +5,7 @@ import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.miguel.spring.project.springbootproject.entities.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,8 +28,9 @@ public class Order implements Serializable {
    //this annotations goes format the Instant to show in json with the apropriate format
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     //this annotations can define the mask that we show the date, withe the respective timezone
-
     private Instant moment;
+
+    private Integer orderStatus;
 
     // now, we declare the associations
     // We need informs that attribut client is a foreight key
@@ -44,10 +46,11 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Long id, Instant moment, User client) {
+    public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
         this.id = id;
         this.moment = moment;
         this.client = client;
+        setOrderStatus(orderStatus);
     }
 
     public Long getId() {
@@ -74,6 +77,23 @@ public class Order implements Serializable {
         this.client = client;
     }
 
+    
+
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus);
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if (orderStatus != null)
+        {
+            this.orderStatus = orderStatus.getCode();
+    
+        }
+        else
+        {
+           throw new IllegalArgumentException("Invalida Order Status");
+        }
+    }
     @Override
     public int hashCode() {
         final int prime = 31;
