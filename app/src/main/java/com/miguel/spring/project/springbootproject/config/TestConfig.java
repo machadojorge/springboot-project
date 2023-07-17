@@ -15,9 +15,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.miguel.spring.project.springbootproject.entities.Category;
 import com.miguel.spring.project.springbootproject.entities.Order;
 import com.miguel.spring.project.springbootproject.entities.User;
 import com.miguel.spring.project.springbootproject.entities.enums.OrderStatus;
+import com.miguel.spring.project.springbootproject.repositories.CategoryRepository;
 import com.miguel.spring.project.springbootproject.repositories.OrderRepository;
 import com.miguel.spring.project.springbootproject.repositories.UserRepository;
 
@@ -34,6 +36,9 @@ public class TestConfig implements CommandLineRunner
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
     // This method of this interface it is used for do something where the run is execute
     // in this case, ever the program is executed this method is called
     @Override
@@ -57,6 +62,15 @@ public class TestConfig implements CommandLineRunner
         Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), u1, OrderStatus.WAITING_PAYMENT);
     
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
+
+
+        //Insert category in the database
+        Category cat1 = new Category(null, "Electronics");
+        Category cat2 = new Category(null, "Bocks");
+        Category cat3 = new Category(null, "Computer");
+        
+        // save in the database
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
     }
 
 
