@@ -17,10 +17,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.miguel.spring.project.springbootproject.entities.Category;
 import com.miguel.spring.project.springbootproject.entities.Order;
+import com.miguel.spring.project.springbootproject.entities.Products;
 import com.miguel.spring.project.springbootproject.entities.User;
 import com.miguel.spring.project.springbootproject.entities.enums.OrderStatus;
 import com.miguel.spring.project.springbootproject.repositories.CategoryRepository;
 import com.miguel.spring.project.springbootproject.repositories.OrderRepository;
+import com.miguel.spring.project.springbootproject.repositories.ProductsRepository;
 import com.miguel.spring.project.springbootproject.repositories.UserRepository;
 
 @Configuration
@@ -39,6 +41,9 @@ public class TestConfig implements CommandLineRunner
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductsRepository productsRepository;
     // This method of this interface it is used for do something where the run is execute
     // in this case, ever the program is executed this method is called
     @Override
@@ -71,7 +76,15 @@ public class TestConfig implements CommandLineRunner
         
         // save in the database
         categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
-    }
+        
+        Products p1 = new Products(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
+        Products p2 = new Products(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
+        Products p3 = new Products(null, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
+        Products p4 = new Products(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
+        Products p5 = new Products(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
+
+        productsRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+}
 
 
 
