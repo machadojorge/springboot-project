@@ -8,6 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -24,7 +27,14 @@ public class Products implements Serializable {
     private Double price;
     private String imgUrl;
 
-    @Transient
+    @ManyToMany
+    // this is a relation many to many, because that, we use the annotation @ManyToMany
+    // and o JoinTable() for to say to spring what are the tables and the field of this tables
+    // for to new table
+    // the product_id is the foreight key of the product
+    @JoinTable(name="tb_product_category", 
+    joinColumns = @JoinColumn(name="product_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id") ) // the inverseJoinColumns define the other foreight key of the another entity 
     private Set<Category> categories = new HashSet<>();
 
     public Products() {
