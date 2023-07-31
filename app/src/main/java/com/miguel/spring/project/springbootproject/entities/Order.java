@@ -2,6 +2,8 @@ package com.miguel.spring.project.springbootproject.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -42,6 +45,12 @@ public class Order implements Serializable {
    // this annottation is to join this foreigh key to this table, and we give a name to this column
    @JoinColumn(name = "client_id")
     private User client;
+
+    // in this case, the relation is On to Many, one Order can be have many products
+    // for that in class OrderItem, we are the private attribute Order
+    // because that, in this class we use the mappeBy = "id.order" because the id in the OrderItem class
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order() {
     }
@@ -94,6 +103,12 @@ public class Order implements Serializable {
            throw new IllegalArgumentException("Invalida Order Status");
         }
     }
+
+
+    public Set<OrderItem> getItem(){
+        return items;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;

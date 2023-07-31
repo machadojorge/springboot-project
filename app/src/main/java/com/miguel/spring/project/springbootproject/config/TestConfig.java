@@ -17,10 +17,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.miguel.spring.project.springbootproject.entities.Category;
 import com.miguel.spring.project.springbootproject.entities.Order;
+import com.miguel.spring.project.springbootproject.entities.OrderItem;
 import com.miguel.spring.project.springbootproject.entities.Products;
 import com.miguel.spring.project.springbootproject.entities.User;
 import com.miguel.spring.project.springbootproject.entities.enums.OrderStatus;
 import com.miguel.spring.project.springbootproject.repositories.CategoryRepository;
+import com.miguel.spring.project.springbootproject.repositories.OrderItemRepository;
 import com.miguel.spring.project.springbootproject.repositories.OrderRepository;
 import com.miguel.spring.project.springbootproject.repositories.ProductsRepository;
 import com.miguel.spring.project.springbootproject.repositories.UserRepository;
@@ -44,8 +46,13 @@ public class TestConfig implements CommandLineRunner
 
     @Autowired
     private ProductsRepository productsRepository;
+   
+   
+   @Autowired
+   private OrderItemRepository orderItemRepository;
     // This method of this interface it is used for do something where the run is execute
     // in this case, ever the program is executed this method is called
+   
     @Override
     public void run(String... args) throws Exception {
         // TODO Auto-generated method stub
@@ -95,7 +102,17 @@ public class TestConfig implements CommandLineRunner
 
         productsRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 
-}
+
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+        OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
+
+
+    }
 
 
 

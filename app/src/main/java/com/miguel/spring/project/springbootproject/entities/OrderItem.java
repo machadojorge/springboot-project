@@ -2,6 +2,7 @@ package com.miguel.spring.project.springbootproject.entities;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miguel.spring.project.springbootproject.entities.pk.OrderItemPK;
 
 import jakarta.persistence.Embedded;
@@ -19,7 +20,8 @@ public class OrderItem  implements Serializable{
     //how we work with a complex Id, we do not use the @id, 
     // in this case, we use other annotation
     @EmbeddedId
-    private OrderItemPK id;
+    private OrderItemPK id = new OrderItemPK(); //whenever the primary key is from a complex class
+    // we need instance the object some like that "Object = new Class()"" 
 
     private Integer quantity;
     private Double price;
@@ -79,6 +81,9 @@ public class OrderItem  implements Serializable{
 
     // we need generate the get and set to the orderId, 
 
+    // in this method is necessary put ther the "@JsonIgnore" because this method calls the 
+    // the getOrder, and the Order call the get product and a error appends, a infinit loop
+    @JsonIgnore
     public Order getOrder()
     {
         return id.getOrder();
