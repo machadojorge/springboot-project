@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import com.miguel.spring.project.springbootproject.repositories.UserRepository;
 import com.miguel.spring.project.springbootproject.services.exceptions.DataBaseException;
 import com.miguel.spring.project.springbootproject.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import com.miguel.spring.project.springbootproject.entities.User;
 // this class in package "services" is used to connect the database to controlles
 // for that, the "UserService" needs a dependency to userRepository
@@ -70,9 +73,15 @@ public class UserService {
     {
         // this method we catch the user by id from the repository
         // this method just prepare the object for us, but do not save this object in the Database
-        User entity = repository.getReferenceById(id);
-        updateData(entity, obj);
-        return repository.save(entity);
+        try{
+            User entity = repository.getReferenceById(id);
+            updateData(entity, obj);
+            return repository.save(entity);
+        }
+        catch (EntityNotFoundException e)
+        {
+            throw new ResourceNotFoundException(id);
+        }
 
     }
 
