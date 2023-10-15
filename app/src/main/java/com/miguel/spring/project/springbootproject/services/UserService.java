@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.miguel.spring.project.springbootproject.repositories.UserRepository;
+import com.miguel.spring.project.springbootproject.services.exceptions.DataBaseException;
 import com.miguel.spring.project.springbootproject.services.exceptions.ResourceNotFoundException;
 import com.miguel.spring.project.springbootproject.entities.User;
 // this class in package "services" is used to connect the database to controlles
@@ -49,7 +52,17 @@ public class UserService {
     /// Delete a user
     public void delete(Long id)
     {
-        repository.deleteById(id);
+        try{
+            repository.deleteById(id);
+        }
+        catch ( EmptyResultDataAccessException e)
+        {
+            throw new ResourceNotFoundException(id);
+        }
+        catch ( DataIntegrityViolationException e)
+        {
+            throw new DataBaseException(e.getMessage());
+        }
     }
 
     /// Update a User

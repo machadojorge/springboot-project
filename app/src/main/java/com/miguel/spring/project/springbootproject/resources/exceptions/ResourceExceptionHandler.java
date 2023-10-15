@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.miguel.spring.project.springbootproject.services.exceptions.DataBaseException;
 import com.miguel.spring.project.springbootproject.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,5 +25,18 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(err);
 
     }
+
+    // This method is mandatory for solve the DatabaseException class
+     @ExceptionHandler(DataBaseException.class) // this annotation informs this method goes intercept any exception with this name "ResourceNotFound"
+    public ResponseEntity<StandardError> dataBase(DataBaseException e, HttpServletRequest request)
+    {
+        String error = "Resource not found";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+
+    }
+
+
     
 }
