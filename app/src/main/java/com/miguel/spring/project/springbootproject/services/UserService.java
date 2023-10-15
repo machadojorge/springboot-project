@@ -43,6 +43,13 @@ public class UserService {
         return repository.save(obj);
 
     }
+
+    /// Delete a user
+    public void delete(Long id)
+    {
+        repository.deleteById(id);
+    }
+
 }
 
 // IMPORTANT: this class go inject dependencys in other class, for that, we need register the class with some annotations "@Component"
