@@ -50,6 +50,27 @@ public class UserService {
         repository.deleteById(id);
     }
 
+    /// Update a User
+    public User update(Long id, User obj)
+    {
+        // this method we catch the user by id from the repository
+        // this method just prepare the object for us, but do not save this object in the Database
+        User entity = repository.getReferenceById(id);
+        updateData(entity, obj);
+        return repository.save(entity);
+
+    }
+
+
+    private void updateData(User entity, User obj) {
+
+        entity.setName(obj.getName());
+        entity.setEmail(obj.getEmail());
+        entity.setPhone(obj.getPhone());
+
+    }
+
+
 }
 
 // IMPORTANT: this class go inject dependencys in other class, for that, we need register the class with some annotations "@Component"
