@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.miguel.spring.project.springbootproject.repositories.UserRepository;
-
+import com.miguel.spring.project.springbootproject.services.exceptions.ResourceNotFoundException;
 import com.miguel.spring.project.springbootproject.entities.User;
 // this class in package "services" is used to connect the database to controlles
 // for that, the "UserService" needs a dependency to userRepository
@@ -33,7 +33,9 @@ public class UserService {
     {
         Optional<User> obj = repository.findById(id);
         // the option ".get()" from Optional goes returns User
-        return obj.get();
+        // In this case we use the orElseThrow to thorw a exception
+        //we use a labda exception to throw the our exception passing the id of object that not exist
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
 
