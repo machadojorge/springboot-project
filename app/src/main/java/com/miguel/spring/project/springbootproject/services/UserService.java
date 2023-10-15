@@ -35,6 +35,14 @@ public class UserService {
         // the option ".get()" from Optional goes returns User
         return obj.get();
     }
+
+
+    /// saves a user in the database
+    public User insert(User obj)
+    {
+        return repository.save(obj);
+
+    }
 }
 
 // IMPORTANT: this class go inject dependencys in other class, for that, we need register the class with some annotations "@Component"

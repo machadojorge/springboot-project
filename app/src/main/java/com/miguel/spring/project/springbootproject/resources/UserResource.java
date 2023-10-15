@@ -1,13 +1,17 @@
 package com.miguel.spring.project.springbootproject.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.miguel.spring.project.springbootproject.entities.User;
 import com.miguel.spring.project.springbootproject.services.UserService;
@@ -48,5 +52,19 @@ public class UserResource {
     {
         User obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+
+    /// POST Method to insert a new user in the BD
+    @PostMapping
+    public ResponseEntity<User> insert(@RequestBody User obj) // this anotations indicates that receives a object in the body in the type json and
+    // this object will goes deserializer to a object java
+    {
+        obj = service.insert(obj);
+        // in this case we returns, after insert a new user, the response status
+        // for that, we need creates a header of type URI
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
+
     }
 }
