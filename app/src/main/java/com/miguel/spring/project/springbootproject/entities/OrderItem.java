@@ -93,7 +93,7 @@ public class OrderItem  implements Serializable{
     {
         this.setOrder(order);
     }
-
+    
     public Products getProduct()
     {
         return this.id.getProducts();

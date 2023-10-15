@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Profile;
 import com.miguel.spring.project.springbootproject.entities.Category;
 import com.miguel.spring.project.springbootproject.entities.Order;
 import com.miguel.spring.project.springbootproject.entities.OrderItem;
+import com.miguel.spring.project.springbootproject.entities.Payment;
 import com.miguel.spring.project.springbootproject.entities.Products;
 import com.miguel.spring.project.springbootproject.entities.User;
 import com.miguel.spring.project.springbootproject.entities.enums.OrderStatus;
@@ -109,6 +110,15 @@ public class TestConfig implements CommandLineRunner
         OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 
         orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
+        Payment py1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+        /// IMPORTANT 
+        // for we saves a object result that relation "one to one", we needs call the class that receives a payment, the class we have a object and do the "setMethod()"
+        // to save the payment in the object order
+        // after that we saves the Order with the new Payment association
+        o1.setPayment(py1);
+        orderRepository.save(o1);
+
 
 
 

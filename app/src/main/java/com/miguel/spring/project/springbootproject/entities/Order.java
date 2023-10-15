@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miguel.spring.project.springbootproject.entities.enums.OrderStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -51,6 +53,12 @@ public class Order implements Serializable {
     // because that, in this class we use the mappeBy = "id.order" because the id in the OrderItem class
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
+
+    // The Order has a Payment
+    // we need expecify this relation
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL) // This is used when the relation is "one to one" bethween class. The cascade indicates that order as the same id that the payment
+    private Payment payment;
+
 
     public Order() {
     }
@@ -109,6 +117,15 @@ public class Order implements Serializable {
         return items;
     }
     
+    
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

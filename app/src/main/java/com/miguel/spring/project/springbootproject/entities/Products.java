@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -36,6 +39,10 @@ public class Products implements Serializable {
     joinColumns = @JoinColumn(name="product_id"),
     inverseJoinColumns = @JoinColumn(name = "category_id") ) // the inverseJoinColumns define the other foreight key of the another entity 
     private Set<Category> categories = new HashSet<>();
+
+    //Mapping with the database
+    @OneToMany(mappedBy = "id.products")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Products() {
     }
@@ -90,6 +97,17 @@ public class Products implements Serializable {
 
     public Set<Category> getCategories() {
         return categories;
+    }
+    @JsonIgnore
+    public Set<Order> getOrders()
+    {
+        Set<Order> set = new HashSet<>();
+        for(OrderItem x : items)
+        {
+            set.add(x.getOrder());
+        }
+        return set;
+
     }
 
     @Override
